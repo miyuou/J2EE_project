@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/main :: head">
+    <title>Profile - Auction System</title>
+</head>
+<body>
+    <div th:replace="layout/main :: nav"></div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Profile Information</h4>
+                        <div class="text-center mb-4">
+                            <i class="fas fa-user-circle fa-5x text-primary"></i>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Username:</strong>
+                            <p th:text="${user.username}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Full Name:</strong>
+                            <p th:text="${user.fullName}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Email:</strong>
+                            <p th:text="${user.email}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Member Since:</strong>
+                            <p th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Last Login:</strong>
+                            <p th:text="${#temporals.format(user.lastLogin, 'dd/MM/yyyy HH:mm')}"></p>
+                        </div>
+                        <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">My Active Auctions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${activeAuctions.empty}" class="text-center">
+                            <p>You don't have any active auctions.</p>
+                            <a href="/auctions/create" class="btn btn-primary">Create Auction</a>
+                        </div>
+                        <div th:each="auction : ${activeAuctions}" class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 th:text="${auction.title}"></h6>
+                                    <p class="mb-0">Current Bid: $<span th:text="${auction.currentPrice}"></span></p>
+                                </div>
+                                <a th:href="@{/auctions/{id}(id=${auction.id})}" class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">My Bids</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${myBids.empty}" class="text-center">
+                            <p>You haven't placed any bids yet.</p>
+                            <a href="/auctions" class="btn btn-primary">Browse Auctions</a>
+                        </div>
+                        <div th:each="bid : ${myBids}" class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 th:text="${bid.auction.title}"></h6>
+                                    <p class="mb-0">Your Bid: $<span th:text="${bid.amount}"></span></p>
+                                </div>
+                                <a th:href="@{/auctions/{id}(id=${bid.auction.id})}" class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="layout/main :: footer"></div>
+</body>
+</html> 

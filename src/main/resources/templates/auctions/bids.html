@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bids</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container mt-4">
+        <h2>My Bids</h2>
+
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${success}">Success message</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${error}">Error message</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="row">
+            <div th:each="auction : ${auctions}" class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img th:if="${auction.imagePath}" th:src="@{${auction.imagePath}}" class="card-img-top" alt="Auction image">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${auction.title}">Auction Title</h5>
+                        <p class="card-text" th:text="${auction.description}">Description</p>
+                        <p class="card-text">
+                            <strong>Current Price:</strong> $<span th:text="${auction.currentPrice}">0.00</span>
+                        </p>
+                        <p class="card-text">
+                            <strong>Ends:</strong> <span th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}">End Date</span>
+                        </p>
+                        <p class="card-text">
+                            <strong>Status:</strong> <span th:text="${auction.status}">Status</span>
+                        </p>
+                        <p class="card-text">
+                            <strong>Seller:</strong> <span th:text="${auction.ownerName}">Owner</span>
+                        </p>
+                        <p class="card-text" th:if="${auction.currentBidderId == T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getPrincipal().getUsername()}">
+                            <span class="badge badge-success">You are the highest bidder!</span>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a th:href="@{/auctions/{id}(id=${auction.id})}" class="btn btn-primary">View Details</a>
+                        <form th:if="${auction.status == T(com.myapp.entity.enums.AuctionStatus).ACTIVE}"
+                              th:action="@{/auctions/{id}/bid(id=${auction.id})}" method="post" class="d-inline">
+                            <div class="input-group">
+                                <input type="number" name="amount" class="form-control" step="0.01" min="0.01"
+                                       th:min="${auction.currentPrice + 0.01}" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-success">Place Bid</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <nav th:if="${auctions.totalPages > 1}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${auctions.first} ? 'disabled'">
+                            <a class="page-link" th:href="@{/auctions/bids(page=${auctions.number - 1}, size=${auctions.size})}">Previous</a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, auctions.totalPages - 1)}"
+                            th:classappend="${i == auctions.number} ? 'active'">
+                            <a class="page-link" th:href="@{/auctions/bids(page=${i}, size=${auctions.size})}" th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${auctions.last} ? 'disabled'">
+                            <a class="page-link" th:href="@{/auctions/bids(page=${auctions.number + 1}, size=${auctions.size})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> 

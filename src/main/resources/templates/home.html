@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/main :: head">
+    <title>Home - Auction System</title>
+</head>
+<body>
+    <div th:replace="layout/main :: nav"></div>
+
+    <div class="container mt-4">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">Welcome to Auction System</h1>
+            <p class="lead">Discover unique items and place your bids in real-time auctions.</p>
+            <hr class="my-4">
+            <p>Join our community of buyers and sellers today!</p>
+            <a class="btn btn-primary btn-lg" href="/auctions" role="button">Browse Auctions</a>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-gavel"></i> Active Auctions</h5>
+                        <p class="card-text">Browse through our current active auctions and find your next treasure.</p>
+                        <a href="/auctions" class="btn btn-outline-primary">View Auctions</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-history"></i> Auction History</h5>
+                        <p class="card-text">Check out completed auctions and their final prices.</p>
+                        <a href="/auctions/history" class="btn btn-outline-primary">View History</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-user-plus"></i> Join Us</h5>
+                        <p class="card-text">Create an account to start bidding and selling items.</p>
+                        <a href="/register" class="btn btn-outline-primary">Register Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2>Featured Auctions</h2>
+                <div class="row" id="featuredAuctions">
+                    <!-- Featured auctions will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="layout/main :: footer"></div>
+
+    <script th:inline="javascript">
+        // Load featured auctions
+        $(document).ready(function() {
+            $.get('/api/auctions/featured', function(auctions) {
+                const container = $('#featuredAuctions');
+                auctions.forEach(auction => {
+                    container.append(`
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img src="${auction.imageUrl}" class="card-img-top" alt="${auction.title}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${auction.title}</h5>
+                                    <p class="card-text">${auction.description}</p>
+                                    <p class="card-text">
+                                        <strong>Current Bid:</strong> $${auction.currentBid}<br>
+                                        <strong>Time Left:</strong> ${auction.timeLeft}
+                                    </p>
+                                    <a href="/auctions/${auction.id}" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

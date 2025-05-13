@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <footer th:fragment="footer" class="footer mt-5 py-3 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Auction System</h5>
+                    <p class="text-muted">A platform for buying and selling items through auctions.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/auctions}">All Auctions</a></li>
+                        <li><a th:href="@{/auctions/active}">Active Auctions</a></li>
+                        <li><a th:href="@{/about}">About Us</a></li>
+                        <li><a th:href="@{/contact}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li>Email: support@auctionsystem.com</li>
+                        <li>Phone: (123) 456-7890</li>
+                        <li>Address: 123 Auction St, City, Country</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col text-center">
+                    <p class="text-muted">&copy; 2024 Auction System. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

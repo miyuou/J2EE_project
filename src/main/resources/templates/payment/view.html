@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Payment Details</title>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Payment Details</h2>
+        
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            <span th:text="${success}"></span>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Payment Information</h5>
+                <dl class="row">
+                    <dt class="col-sm-3">ID</dt>
+                    <dd class="col-sm-9" th:text="${payment.id}"></dd>
+
+                    <dt class="col-sm-3">Amount</dt>
+                    <dd class="col-sm-9" th:text="${payment.amount}"></dd>
+
+                    <dt class="col-sm-3">Date</dt>
+                    <dd class="col-sm-9" th:text="${#temporals.format(payment.date, 'yyyy-MM-dd HH:mm')}"></dd>
+
+                    <dt class="col-sm-3">Status</dt>
+                    <dd class="col-sm-9" th:text="${payment.status}"></dd>
+
+                    <dt class="col-sm-3">Method</dt>
+                    <dd class="col-sm-9" th:text="${payment.method}"></dd>
+
+                    <dt class="col-sm-3">User ID</dt>
+                    <dd class="col-sm-9" th:text="${payment.userId}"></dd>
+
+                    <dt class="col-sm-3">Bid ID</dt>
+                    <dd class="col-sm-9" th:text="${payment.bidId}"></dd>
+
+                    <dt class="col-sm-3">Auction ID</dt>
+                    <dd class="col-sm-9" th:text="${payment.auctionId}"></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <a th:href="@{/payments/{id}/edit(id=${payment.id})}" class="btn btn-warning">Edit</a>
+            <form th:action="@{/payments/{id}/delete(id=${payment.id})}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+            </form>
+            <a th:href="@{/payments}" class="btn btn-secondary">Back to List</a>
+        </div>
+
+        <div class="mt-3" th:if="${payment.status != T(com.myapp.entity.enums.PaymentStatus).PAID}">
+            <form th:action="@{/payments/{id}/status(id=${payment.id})}" method="post">
+                <input type="hidden" name="status" th:value="${T(com.myapp.entity.enums.PaymentStatus).PAID}">
+                <button type="submit" class="btn btn-success">Mark as Paid</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 
