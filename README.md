@@ -46,8 +46,8 @@ A Spring Boot-based auction system that allows users to create, bid on, and mana
 3. Configure database connection in `src/main/resources/application.properties`:
    ```properties
    spring.datasource.url=jdbc:mysql://localhost:3306/auction_db?useSSL=false&serverTimezone=UTC
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
+   spring.datasource.username=mery
+   spring.datasource.password=azertyu
    ```
 
 4. Build the project:

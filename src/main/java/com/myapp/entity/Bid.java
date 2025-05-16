@@ -31,7 +31,7 @@ public class Bid {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id", nullable = false)
-    private AuctionObject auction;
+    private AuctionObject auctionObject;
 
     // Constructors
     public Bid() {
@@ -41,7 +41,7 @@ public class Bid {
         this.amount = amount;
         this.timestamp = LocalDateTime.now();
         this.user = user;
-        this.auction = auction;
+        this.auctionObject = auction;
     }
 
     // Getters and Setters
@@ -86,10 +86,10 @@ public class Bid {
     }
 
     public AuctionObject getAuctionObject() {
-        return auction;
+        return auctionObject;
     }
 
     public void setAuctionObject(AuctionObject auction) {
-        this.auction = auction;
+        this.auctionObject = auctionObject;
     }
 } 

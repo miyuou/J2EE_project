@@ -33,6 +33,7 @@ public class AuctionObject {
     @DecimalMin(value = "0.01", message = "Starting price must be greater than 0")
     private BigDecimal startPrice;
 
+    @Column(name = "current_price")
     private BigDecimal currentPrice;
 
     @NotNull(message = "End date is required")
@@ -52,7 +53,7 @@ public class AuctionObject {
     @JoinColumn(name = "current_bidder_id")
     private User currentBidder;
 
-    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "auctionObject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bid> bids = new ArrayList<>();
 
     // Getters and Setters

@@ -41,6 +41,7 @@ public class HomeController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new UserDTO());
+        System.out.println(">>> DAKHLI L PAGE REGISTER <<<");
         return "register";
     }
 
@@ -57,9 +58,10 @@ public class HomeController {
             redirectAttributes.addFlashAttribute("success", "Registration successful! Please login.");
             return "redirect:/login";
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/register";
+            result.rejectValue(null, null, e.getMessage());
+            return "register"; // mashi redirection
         }
+
     }
 
     @GetMapping("/dashboard")
@@ -68,9 +70,5 @@ public class HomeController {
         return "dashboard";
     }
 
-    @GetMapping("/api/auctions/featured")
-    @ResponseBody
-    public Object getFeaturedAuctions() {
-        return auctionService.getFeaturedAuctions();
-    }
+
 } 

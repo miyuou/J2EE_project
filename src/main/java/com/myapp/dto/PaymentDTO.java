@@ -9,19 +9,19 @@ import java.time.LocalDateTime;
 
 public class PaymentDTO {
     private Long id;
-    
+
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private BigDecimal amount;
-    
+
     private LocalDateTime date;
     
     @NotNull(message = "Payment status is required")
     private PaymentStatus status;
-    
+
     @NotNull(message = "Payment method is required")
     private PaymentMethod method;
-    
+
     private Long userId;
     private String username;
     private Long bidId;

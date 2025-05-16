@@ -20,19 +20,20 @@ public class UserDTO {
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    private Set<String> roles;
+
 
     // Constructors
-    public UserDTO() {
-    }
 
-    public UserDTO(Long id, String username, String email, Set<String> roles) {
+
+    public UserDTO(Long id, String username, String email,String password, Set<String> roles) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.roles = roles;
-    }
+        this.password = password;
 
+    }
+    public UserDTO() {
+    }
     // Getters and Setters
     public Long getId() {
         return id;
@@ -66,11 +67,5 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
 } 

@@ -40,26 +40,6 @@ public interface AuctionObjectRepository extends JpaRepository<AuctionObject, Lo
         @Param("status") AuctionStatus status,
         @Param("now") LocalDateTime now
     );
-    
-    /**
-     * Find active auctions sorted by price ascending
-     */
-    @Query("SELECT a FROM AuctionObject a WHERE a.status = :status AND a.endDate > :now ORDER BY a.currentPrice ASC")
-    Page<AuctionObject> findActiveAuctionsByPriceAsc(
-        @Param("status") AuctionStatus status,
-        @Param("now") LocalDateTime now,
-        Pageable pageable
-    );
-    
-    /**
-     * Find active auctions sorted by price descending
-     */
-    @Query("SELECT a FROM AuctionObject a WHERE a.status = :status AND a.endDate > :now ORDER BY a.currentPrice DESC")
-    Page<AuctionObject> findActiveAuctionsByPriceDesc(
-        @Param("status") AuctionStatus status,
-        @Param("now") LocalDateTime now,
-        Pageable pageable
-    );
 
     /**
      * Find auctions by current bidder

@@ -30,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
+        System.out.println("Password received: " + userDTO.getPassword());
+
         if (existsByUsername(userDTO.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
@@ -38,13 +40,17 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = convertToEntity(userDTO);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRoles(new HashSet<>());
-        user.getRoles().add("ROLE_USER");
+        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+
+        System.out.println("Password encoded: " + encodedPassword);
+
+        user.setPassword(encodedPassword);
+
 
         User savedUser = userRepository.save(user);
         return convertToDTO(savedUser);
     }
+
 
     @Override
     public UserDTO updateUser(Long id, UserDTO userDTO) {
@@ -112,7 +118,7 @@ public class UserServiceImpl implements UserService {
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
-        dto.setRoles(user.getRoles());
+
         return dto;
     }
 
@@ -123,7 +129,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
-        user.setRoles(userDTO.getRoles());
+
         return user;
     }
 

@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface BidRepository extends JpaRepository<Bid, Long> {
     Page<Bid> findByUserId(Long userId, Pageable pageable);
     Page<Bid> findByAuctionObjectId(Long auctionObjectId, Pageable pageable);
-    List<Bid> findByAuctionObjectIdAndStatus(Long auctionObjectId, BidStatus status);
+
     
     @Query("SELECT b FROM Bid b WHERE b.auctionObject.id = ?1 ORDER BY b.amount DESC")
     List<Bid> findTopBidsForAuction(Long auctionObjectId, Pageable pageable);

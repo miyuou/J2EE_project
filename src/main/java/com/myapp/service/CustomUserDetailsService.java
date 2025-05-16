@@ -8,17 +8,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final UserService userService;
 
-    public CustomUserDetailsService(UserRepository userRepository, UserService userService) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userService = userService;
     }
 
     @Override
@@ -30,15 +29,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User is not active: " + username);
         }
 
-        // Update last login time
-        userService.updateLastLogin(username);
-
         return new org.springframework.security.core.userdetails.User(
             user.getUsername(),
             user.getPassword(),
-            user.getRoles().stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList())
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
         );
     }
 } 
