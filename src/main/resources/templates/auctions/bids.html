@@ -52,7 +52,7 @@
                     <div class="card-footer">
                         <a th:href="@{/auctions/{id}(id=${auction.id})}" class="btn btn-primary">View Details</a>
                         <form th:if="${auction.status == T(com.myapp.entity.enums.AuctionStatus).ACTIVE}"
-                              th:action="@{/auctions/{id}/bid(id=${auction.id})}" method="post" class="d-inline">
+                              th:action="@{/auctions/{id}/bids(id=${auction.id})}" method="post" class="d-inline">
                             <div class="input-group">
                                 <input type="number" name="amount" class="form-control" step="0.01" min="0.01"
                                        th:min="${auction.currentPrice + 0.01}" required>

@@ -4,57 +4,80 @@
     <title>Edit Auction - Auction System</title>
 </head>
 <body>
-    <div th:replace="~{layout/main :: nav}"></div>
+<div th:replace="~{layout/main :: nav}"></div>
 
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="mb-0">Edit Auction</h3>
-                    </div>
-                    <div class="card-body">
-                        <form th:action="@{/auctions/{id}/edit(id=${auction.id})}" method="post" th:object="${auction}" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" th:field="*{title}" required>
-                                <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Edit Auction</h3>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/auctions/{id}/edit(id=${auction.id})}" method="post" th:object="${auction}" enctype="multipart/form-data">
+
+
+                        <!-- Existing Fields -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" th:field="*{title}" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
+                            <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                        </div>
+
+                        <!-- Missing Price Fields -->
+                        <div class="mb-3">
+                            <label for="startPrice" class="form-label">Start Price ($)</label>
+                            <input type="number" class="form-control" id="startPrice" th:field="*{startPrice}"
+                                   min="0.01" step="0.01" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('startPrice')}" th:errors="*{startPrice}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Current Price ($)</label>
+                            <input type="text" class="form-control" th:value="${auction.currentPrice}" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="endDate" class="form-label">End Time</label>
+                            <input type="datetime-local" class="form-control" id="endDate" th:field="*{endDate}" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+                        </div>
+
+                        <!-- Image Upload -->
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Auction Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            <div class="form-text">Optional: Upload a new image for your auction</div>
+                            <div th:if="${auction.imagePath}" class="mt-2">
+                                <img th:src="${auction.imagePath}" alt="Current Image" class="img-thumbnail" style="max-height: 200px;">
+                                <p class="mt-2">Current image: <span th:text="${auction.imagePath}"></span></p>
                             </div>
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
-                                <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
-                            </div>
-
-
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Auction Image</label>
-                                <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                                <div class="form-text">Optional: Upload a new image for your auction</div>
-                                <div th:if="${auction.imageUrl}" class="mt-2">
-                                    <img th:src="${auction.imageUrl}" alt="Current Image" class="img-thumbnail" style="max-height: 200px;">
-                                </div>
-                            </div>
-
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">Update Auction</button>
-                                <a th:href="@{/auctions/{id}(id=${auction.id})}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Update Auction</button>
+                            <a th:href="@{/auctions/{id}(id=${auction.id})}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div th:replace="~{layout/main :: footer}"></div>
+<div th:replace="~{layout/main :: footer}"></div>
 
-    <script th:inline="javascript">
-        // Set minimum datetime to current time
-        const now = new Date();
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-        document.getElementById('endTime').min = now.toISOString().slice(0, 16);
-    </script>
+<script th:inline="javascript">
+    // Set minimum datetime to current time
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.getElementById('endDate').min = now.toISOString().slice(0, 16);
+</script>
 </body>
-</html> 
+</html>
