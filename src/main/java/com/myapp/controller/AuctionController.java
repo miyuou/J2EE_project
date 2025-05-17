@@ -35,6 +35,7 @@ public class AuctionController {
         this.userService = userService;
     }
 
+
     @GetMapping
     public String listAuctions(
             @RequestParam(defaultValue = "0") int page,

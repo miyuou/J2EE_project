@@ -1,1 +1,17 @@
- 
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Optional head content -->
+</head>
+<body>
+<!-- This defines the fragment -->
+<header th:fragment="header">
+    <!-- Your header content here -->
+    <h1>My Auction Site</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/auctions">Auctions</a>
+    </nav>
+</header>
+</body>
+</html>
