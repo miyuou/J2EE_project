@@ -1,10 +1,12 @@
 package com.myapp.controller;
 
 import com.myapp.dto.AuctionObjectDTO;
+import com.myapp.dto.BidDTO;
 import com.myapp.entity.User;
 import com.myapp.entity.enums.AuctionStatus;
 import com.myapp.exception.AuctionException;
 import com.myapp.service.AuctionService;
+import com.myapp.service.BidService;
 import com.myapp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,16 @@ import java.math.BigDecimal;
 @Controller
 @RequestMapping("/auctions")
 public class AuctionController {
+    private final BidService bidService ;
 
     private final AuctionService auctionService;
     private final UserService userService;
 
     @Autowired
-    public AuctionController(AuctionService auctionService, UserService userService) {
+    public AuctionController(AuctionService auctionService, UserService userService,BidService bidService) {
         this.auctionService = auctionService;
         this.userService = userService;
+        this.bidService = bidService;
     }
 
 
@@ -77,19 +81,22 @@ public class AuctionController {
         return "auctions/my";
     }
 
-    @GetMapping("/bids")
+    @GetMapping("/{id}/bids")
     public String listMyBids(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Model model) {
+
         User user = userService.findByUsername(userDetails.getUsername());
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<AuctionObjectDTO> auctions = auctionService.getAuctionsWithUserBids(user.getId(), pageRequest);
-        model.addAttribute("auctions", auctions);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("timestamp").descending());
+
+        // Get bids with auction information
+        Page<BidDTO> bids = bidService.getBidsByUserId(user.getId(), pageRequest);
+
+        model.addAttribute("bids", bids);
         return "auctions/bids";
     }
-
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("auction", new AuctionObjectDTO());

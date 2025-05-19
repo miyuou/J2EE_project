@@ -20,7 +20,8 @@ public class BidDTO {
     private Long auctionId;
     private Long auctionObjectId;
     private String auctionTitle;
-
+    private String auctionImagePath;  // Add this field
+    private boolean isWinning;
     // Constructors
     public BidDTO() {
     }
@@ -104,5 +105,20 @@ public class BidDTO {
 
     public void setAuctionTitle(String auctionTitle) {
         this.auctionTitle = auctionTitle;
+    }
+    public String getAuctionImagePath() {
+        return auctionImagePath;
+    }
+
+    public void setAuctionImagePath(String auctionImagePath) {
+        this.auctionImagePath = auctionImagePath;
+    }
+
+    public boolean isWinning() {
+        return isWinning;
+    }
+
+    public void setWinning(boolean winning) {
+        isWinning = winning;
     }
 } 

@@ -53,7 +53,7 @@
                     <div class="card-body">
                         <h4 class="card-title">Place a Bid</h4>
                         <form th:if="${auction.status == T(com.myapp.entity.enums.AuctionStatus).ACTIVE}"
-                              th:action="@{/auctions/{id}/bids(id=${auction.id})}" method="post">
+                              th:action="@{/auctions/{id}/bid(id=${auction.id})}" method="post">
                             <div class="form-group">
                                 <label for="amount">Your Bid Amount ($)</label>
                                 <input type="number" class="form-control" id="amount" name="amount"

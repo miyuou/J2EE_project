@@ -159,6 +159,11 @@ public class BidServiceImpl implements BidService {
         dto.setUsername(bid.getUser().getUsername());
         dto.setAuctionObjectId(bid.getAuctionObject().getId());
         dto.setAuctionTitle(bid.getAuctionObject().getTitle());
+        dto.setAuctionImagePath(bid.getAuctionObject().getImagePath());
+
+        // Check if this is the winning bid
+        Optional<Bid> winningBid = bidRepository.findWinningBidForAuction(bid.getAuctionObject().getId());
+        dto.setWinning(winningBid.isPresent() && winningBid.get().getId().equals(bid.getId()));
         return dto;
     }
 

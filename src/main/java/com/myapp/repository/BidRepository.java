@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +19,9 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     
     @Query("SELECT b FROM Bid b WHERE b.auctionObject.id = ?1 ORDER BY b.amount DESC")
     List<Bid> findTopBidsForAuction(Long auctionObjectId, Pageable pageable);
-    
-    @Query("SELECT b FROM Bid b WHERE b.auctionObject.id = ?1 AND b.status = 'WON'")
-    Optional<Bid> findWinningBidForAuction(Long auctionObjectId);
+
+    @Query("SELECT b FROM Bid b WHERE b.auctionObject.id = :auctionId ORDER BY b.amount DESC LIMIT 1")
+    Optional<Bid> findWinningBidForAuction(@Param("auctionId") Long auctionId);
     
     @Query("SELECT COUNT(b) FROM Bid b WHERE b.auctionObject.id = ?1")
     long countBidsForAuction(Long auctionObjectId);
